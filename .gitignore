@@ -24,3 +24,24 @@ lib/
 
 
 GCN2/rgbd_gcn
+GCN2/Release/c10.dll
+GCN2/Release/c10_cuda.dll
+GCN2/Release/caffe2_nvrtc.dll
+GCN2/Release/glew32.dll
+GCN2/Release/jpeg62.dll
+GCN2/Release/libpng16.dll
+GCN2/Release/lzma.dll
+GCN2/Release/nvToolsExt64_1.dll
+GCN2/Release/opencv_calib3d.dll
+GCN2/Release/opencv_core.dll
+GCN2/Release/opencv_features2d.dll
+GCN2/Release/opencv_flann.dll
+GCN2/Release/opencv_highgui.dll
+GCN2/Release/opencv_imgcodecs.dll
+GCN2/Release/opencv_imgproc.dll
+GCN2/Release/opencv_videoio.dll
+GCN2/Release/rgbd_gcn.exe
+GCN2/Release/tiff.dll
+GCN2/Release/torch.dll
+GCN2/Release/webp.dll
+GCN2/Release/zlib1.dll

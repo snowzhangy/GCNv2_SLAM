@@ -1456,7 +1456,9 @@ bool TemplatedVocabulary<TDescriptor,F>::loadFromBinaryFile(const std::string &f
   m_nodes.clear();
   m_nodes.resize(nb_nodes+1);
   m_nodes[0].id = 0;
-  char buf[size_node]; int nid = 1;
+  //char buf[size_node]; 
+  char *buf = new char[size_node];
+  int nid = 1;
   while (!f.eof()) {
 	f.read(buf, size_node);
 	m_nodes[nid].id = nid;

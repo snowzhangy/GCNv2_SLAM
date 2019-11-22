@@ -215,7 +215,7 @@ GCNextractor::GCNextractor(int _nfeatures, float _scaleFactor, int _nlevels,
 
     const char *net_fn = getenv("GCN_PATH");
     net_fn = (net_fn == nullptr) ? "gcn2.pt" : net_fn;
-    module = torch::jit::load(net_fn);
+    module = make_shared<torch::jit::script::Module>(torch::jit::load(net_fn));
 
 }
 
