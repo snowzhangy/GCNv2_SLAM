@@ -215,7 +215,12 @@ GCNextractor::GCNextractor(int _nfeatures, float _scaleFactor, int _nlevels,
 
     const char *net_fn = getenv("GCN_PATH");
     net_fn = (net_fn == nullptr) ? "gcn2.pt" : net_fn;
-    module = make_shared<torch::jit::script::Module>(torch::jit::load(net_fn));
+	//torch::Device m_TorchDevice =torch::Device(torch::DeviceType::CUDA);
+	std::shared_ptr<torch::Device> m_TorchDevice = std::unique_ptr<torch::Device>(new torch::Device(torch::DeviceType::CPU));
+	std::ifstream is(net_fn, std::ifstream::binary);
+	//////////
+	assert(is.good()); // fails
+	module = torch::jit::load(net_fn);//td::make_shared<torch::jit::script::Module>(torch::jit::load(is));
 
 }
 
@@ -267,7 +272,7 @@ void GCNextractor::operator()( InputArray _image, InputArray _mask, vector<KeyPo
 
     std::vector<torch::jit::IValue> inputs;
     inputs.push_back(img_var);
-    auto output = module->forward(inputs).toTuple();
+    auto output = module.forward(inputs).toTuple();// module->forward(inputs).toTuple();
 
     auto pts  = output->elements()[0].toTensor().to(torch::kCPU).squeeze();
     auto desc = output->elements()[1].toTensor().to(torch::kCPU).squeeze();
