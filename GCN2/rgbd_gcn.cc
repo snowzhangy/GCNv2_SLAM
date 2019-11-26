@@ -145,29 +145,74 @@ int main(int argc, char **argv)
     return 0;
 }
 
+string getPathName(const string& s) {
+
+	char sep = '/';
+
+	size_t i = s.rfind(sep, s.length());
+	if (i != string::npos) {
+		return(s.substr(0, i));
+	}
+
+	return("");
+}
+
 void LoadImages(const string &strAssociationFilename, vector<string> &vstrImageFilenamesRGB,
                 vector<string> &vstrImageFilenamesD, vector<double> &vTimestamps)
 {
-    ifstream fAssociation;
-    fAssociation.open(strAssociationFilename.c_str());
-    while(!fAssociation.eof())
-    {
-        string s;
-        getline(fAssociation,s);
-        if(!s.empty())
-        {
-            stringstream ss;
-            ss << s;
-            double t;
-            string sRGB, sD;
-            ss >> t;
-            vTimestamps.push_back(t);
-            ss >> sRGB;
-            vstrImageFilenamesRGB.push_back(sRGB);
-            ss >> t;
-            ss >> sD;
-            vstrImageFilenamesD.push_back(sD);
+	if (getenv("NO_ASSOC") == nullptr) {
+		ifstream fAssociation;
+		fAssociation.open(strAssociationFilename.c_str());
+		while (!fAssociation.eof())
+		{
+			string s;
+			getline(fAssociation, s);
+			if (!s.empty())
+			{
+				stringstream ss;
+				ss << s;
+				double t;
+				string sRGB, sD;
+				ss >> t;
+				vTimestamps.push_back(t);
+				ss >> sRGB;
+				vstrImageFilenamesRGB.push_back(sRGB);
+				ss >> t;
+				ss >> sD;
+				vstrImageFilenamesD.push_back(sD);
 
-        }
-    }
+			}
+		}
+	}
+	else
+	{
+		ifstream frgb,fdepth;
+		string pathname = getPathName(strAssociationFilename);
+		frgb.open(pathname+"/rgb.txt");
+		fdepth.open(pathname+"/depth.txt");
+
+		while (!frgb.eof())
+		{
+			string srgb,sdepth;
+			getline(frgb, srgb);
+			getline(fdepth, sdepth);
+			if (!srgb.empty() && srgb[0]!='#')
+			{
+				stringstream ssrgb,ssdepth;
+				ssrgb << srgb;
+				ssdepth << sdepth;
+				double t;
+				string sRGB, sD;
+				ssrgb >> t;
+				vTimestamps.push_back(t);
+				ssrgb >> sRGB;
+				vstrImageFilenamesRGB.push_back(sRGB);
+				ssdepth >> t;
+				ssdepth >> sD;
+				vstrImageFilenamesD.push_back(sD);
+
+			}
+		}
+	}
+	
 }
